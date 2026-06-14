@@ -1,56 +1,22 @@
-"use client";
-
-import { useState } from "react";
 import type { WorkItem } from "@/types/profile";
 
-export function WorkForm() {
-  const [works, setWorks] = useState<WorkItem[]>([
-    {
-      id: "1",
-      category: "",
-      title: "",
-      description: "",
-      technologies: "",
-      role: "",
-      url: "",
-    },
-  ]);
-
-  const handleAddWork = () => {
-    setWorks([
-      ...works,
-      {
-        id: String(Date.now()),
-        category: "",
-        title: "",
-        description: "",
-        technologies: "",
-        role: "",
-        url: "",
-      },
-    ]);
-  };
-
-  const handleDeleteWork = (id: string) => {
-    if (works.length === 1) {
-      return;
-    }
-
-    setWorks(works.filter((work) => work.id !== id));
-  };
-
-  const handleChangeWork = (
+type WorkFormProps = {
+  works: WorkItem[];
+  onAddWork: () => void;
+  onDeleteWork: (id: string) => void;
+  onChangeWork: (
     id: string,
     field: keyof Omit<WorkItem, "id">,
     value: string
-  ) => {
-    setWorks(
-      works.map((work) =>
-        work.id === id ? { ...work, [field]: value } : work
-      )
-    );
-  };
+  ) => void;
+};
 
+export function WorkForm({
+  works,
+  onAddWork,
+  onDeleteWork,
+  onChangeWork,
+}: WorkFormProps) {
   return (
     <section className="rounded-xl border border-gray-200 p-4">
       <h2 className="text-lg font-bold text-gray-900">作ったもの</h2>
@@ -72,7 +38,7 @@ export function WorkForm() {
               <select
                 value={work.category}
                 onChange={(event) =>
-                  handleChangeWork(work.id, "category", event.target.value)
+                  onChangeWork(work.id, "category", event.target.value)
                 }
                 className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900"
               >
@@ -91,7 +57,7 @@ export function WorkForm() {
                 type="text"
                 value={work.title}
                 onChange={(event) =>
-                  handleChangeWork(work.id, "title", event.target.value)
+                  onChangeWork(work.id, "title", event.target.value)
                 }
                 placeholder="作品タイトルを入力"
                 className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900"
@@ -103,7 +69,7 @@ export function WorkForm() {
               <textarea
                 value={work.description}
                 onChange={(event) =>
-                  handleChangeWork(work.id, "description", event.target.value)
+                  onChangeWork(work.id, "description", event.target.value)
                 }
                 placeholder="作品の説明を入力"
                 rows={3}
@@ -119,7 +85,7 @@ export function WorkForm() {
                 type="text"
                 value={work.technologies}
                 onChange={(event) =>
-                  handleChangeWork(work.id, "technologies", event.target.value)
+                  onChangeWork(work.id, "technologies", event.target.value)
                 }
                 placeholder="例：Next.js / Supabase"
                 className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900"
@@ -133,7 +99,7 @@ export function WorkForm() {
               <textarea
                 value={work.role}
                 onChange={(event) =>
-                  handleChangeWork(work.id, "role", event.target.value)
+                  onChangeWork(work.id, "role", event.target.value)
                 }
                 placeholder="担当範囲を入力"
                 rows={3}
@@ -147,7 +113,7 @@ export function WorkForm() {
                 type="url"
                 value={work.url}
                 onChange={(event) =>
-                  handleChangeWork(work.id, "url", event.target.value)
+                  onChangeWork(work.id, "url", event.target.value)
                 }
                 placeholder="https://example.com"
                 className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900"
@@ -156,7 +122,7 @@ export function WorkForm() {
 
             <button
               type="button"
-              onClick={() => handleDeleteWork(work.id)}
+              onClick={() => onDeleteWork(work.id)}
               disabled={works.length === 1}
               className="mt-4 rounded-lg border border-red-300 px-4 py-2 text-sm font-bold text-red-600 disabled:cursor-not-allowed disabled:opacity-40"
             >
@@ -167,7 +133,7 @@ export function WorkForm() {
 
         <button
           type="button"
-          onClick={handleAddWork}
+          onClick={onAddWork}
           className="rounded-lg border border-blue-300 px-4 py-2 text-sm font-bold text-blue-600"
         >
           ＋ 作ったものを追加

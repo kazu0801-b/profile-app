@@ -5,7 +5,11 @@ import { ImageUpload } from "@/components/profile/ImageUpload";
 import { LearningForm } from "@/components/profile/LearningForm";
 import { ProfileForm } from "@/components/profile/ProfileForm";
 import { WorkForm } from "@/components/profile/WorkForm";
-import type { LearningItem, ProfileFormData } from "@/types/profile";
+import type {
+  LearningItem,
+  ProfileFormData,
+  WorkItem,
+} from "@/types/profile";
 
 export default function ProfileEditPage() {
   const [profile, setProfile] = useState<ProfileFormData>({
@@ -22,6 +26,18 @@ export default function ProfileEditPage() {
       id: "1",
       title: "",
       description: "",
+    },
+  ]);
+
+  const [works, setWorks] = useState<WorkItem[]>([
+    {
+      id: "1",
+      category: "",
+      title: "",
+      description: "",
+      technologies: "",
+      role: "",
+      url: "",
     },
   ]);
 
@@ -73,9 +89,50 @@ export default function ProfileEditPage() {
     );
   };
 
+  const handleAddWork = () => {
+    setWorks((prevWorks) => [
+      ...prevWorks,
+      {
+        id: String(Date.now()),
+        category: "",
+        title: "",
+        description: "",
+        technologies: "",
+        role: "",
+        url: "",
+      },
+    ]);
+  };
+
+  const handleDeleteWork = (id: string) => {
+    if (works.length === 1) {
+      return;
+    }
+
+    setWorks((prevWorks) => prevWorks.filter((work) => work.id !== id));
+  };
+
+  const handleChangeWork = (
+    id: string,
+    field: keyof Omit<WorkItem, "id">,
+    value: string
+  ) => {
+    setWorks((prevWorks) =>
+      prevWorks.map((work) =>
+        work.id === id
+          ? {
+              ...work,
+              [field]: value,
+            }
+          : work
+      )
+    );
+  };
+
   const handleSave = () => {
     console.log("プロフィール情報:", profile);
     console.log("学習してきたこと:", learnings);
+    console.log("作ったもの:", works);
   };
 
   return (
@@ -104,7 +161,12 @@ export default function ProfileEditPage() {
             onChangeLearning={handleChangeLearning}
           />
 
-          <WorkForm />
+          <WorkForm
+            works={works}
+            onAddWork={handleAddWork}
+            onDeleteWork={handleDeleteWork}
+            onChangeWork={handleChangeWork}
+          />
         </div>
 
         <div className="mt-8 flex justify-end">
