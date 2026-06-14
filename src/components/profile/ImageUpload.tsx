@@ -1,27 +1,37 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import type { ChangeEvent } from "react";
 
-export function ImageUpload() {
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string>("");
+type ImageUploadProps = {
+  imageFile: File | null;
+  onChangeImageFile: (file: File | null) => void;
+};
+
+export function ImageUpload({
+  imageFile,
+  onChangeImageFile,
+}: ImageUploadProps) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const previewUrl = useMemo(() => {
+    if (!imageFile) {
+      return "";
+    }
+
+    return URL.createObjectURL(imageFile);
+  }, [imageFile]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
 
     if (!file) return;
 
-    const imageUrl = URL.createObjectURL(file);
-
-    setImageFile(file);
-    setPreviewUrl(imageUrl);
+    onChangeImageFile(file);
   };
 
   const handleDeleteImage = () => {
-    setImageFile(null);
-    setPreviewUrl("");
+    onChangeImageFile(null);
 
     if (fileInputRef.current) {
       fileInputRef.current.value = "";

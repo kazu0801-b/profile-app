@@ -12,6 +12,8 @@ import type {
 } from "@/types/profile";
 
 export default function ProfileEditPage() {
+  const [imageFile, setImageFile] = useState<File | null>(null);
+
   const [profile, setProfile] = useState<ProfileFormData>({
     name: "",
     birthMonth: "",
@@ -130,6 +132,7 @@ export default function ProfileEditPage() {
   };
 
   const handleSave = () => {
+    console.log("プロフィール画像:", imageFile);
     console.log("プロフィール情報:", profile);
     console.log("学習してきたこと:", learnings);
     console.log("作ったもの:", works);
@@ -147,7 +150,10 @@ export default function ProfileEditPage() {
         </p>
 
         <div className="mt-8 space-y-8">
-          <ImageUpload />
+          <ImageUpload
+            imageFile={imageFile}
+            onChangeImageFile={setImageFile}
+          />
 
           <ProfileForm
             profile={profile}
