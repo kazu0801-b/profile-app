@@ -1,25 +1,16 @@
 "use client";
 
 import { useState } from "react";
-
-type WorkItem = {
-  id: number;
-  category: string;
-  title: string;
-  description: string;
-  techStack: string;
-  role: string;
-  url: string;
-};
+import type { WorkItem } from "@/types/profile";
 
 export function WorkForm() {
   const [works, setWorks] = useState<WorkItem[]>([
     {
-      id: 1,
+      id: "1",
       category: "",
       title: "",
       description: "",
-      techStack: "",
+      technologies: "",
       role: "",
       url: "",
     },
@@ -29,18 +20,18 @@ export function WorkForm() {
     setWorks([
       ...works,
       {
-        id: Date.now(),
+        id: String(Date.now()),
         category: "",
         title: "",
         description: "",
-        techStack: "",
+        technologies: "",
         role: "",
         url: "",
       },
     ]);
   };
 
-  const handleDeleteWork = (id: number) => {
+  const handleDeleteWork = (id: string) => {
     if (works.length === 1) {
       return;
     }
@@ -49,7 +40,7 @@ export function WorkForm() {
   };
 
   const handleChangeWork = (
-    id: number,
+    id: string,
     field: keyof Omit<WorkItem, "id">,
     value: string
   ) => {
@@ -66,7 +57,10 @@ export function WorkForm() {
 
       <div className="mt-4 space-y-4">
         {works.map((work, index) => (
-          <div key={work.id} className="rounded-lg border border-gray-200 p-4">
+          <div
+            key={work.id}
+            className="rounded-lg border border-gray-200 p-4"
+          >
             <p className="mb-4 text-sm font-bold text-gray-700">
               作ったもの {index + 1}
             </p>
@@ -118,12 +112,14 @@ export function WorkForm() {
             </label>
 
             <label className="mt-4 block">
-              <span className="text-sm font-medium text-gray-700">使用技術</span>
+              <span className="text-sm font-medium text-gray-700">
+                使用技術
+              </span>
               <input
                 type="text"
-                value={work.techStack}
+                value={work.technologies}
                 onChange={(event) =>
-                  handleChangeWork(work.id, "techStack", event.target.value)
+                  handleChangeWork(work.id, "technologies", event.target.value)
                 }
                 placeholder="例：Next.js / Supabase"
                 className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900"
