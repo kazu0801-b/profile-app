@@ -1,21 +1,13 @@
 "use client";
 
 import { useState } from "react";
-
-type ProfileFormData = {
-  name: string;
-  birthdayMonth: string;
-  birthdayDay: string;
-  bloodType: string;
-  mbti: string;
-  bio: string;
-};
+import type { ProfileFormData } from "@/types/profile";
 
 export function ProfileForm() {
   const [profile, setProfile] = useState<ProfileFormData>({
     name: "",
-    birthdayMonth: "",
-    birthdayDay: "",
+    birthMonth: "",
+    birthDay: "",
     bloodType: "",
     mbti: "",
     bio: "",
@@ -56,9 +48,9 @@ export function ProfileForm() {
             </span>
             <input
               type="number"
-              value={profile.birthdayMonth}
+              value={profile.birthMonth}
               onChange={(event) =>
-                handleChangeProfile("birthdayMonth", event.target.value)
+                handleChangeProfile("birthMonth", event.target.value)
               }
               placeholder="例：1"
               min="1"
@@ -73,9 +65,9 @@ export function ProfileForm() {
             </span>
             <input
               type="number"
-              value={profile.birthdayDay}
+              value={profile.birthDay}
               onChange={(event) =>
-                handleChangeProfile("birthdayDay", event.target.value)
+                handleChangeProfile("birthDay", event.target.value)
               }
               placeholder="例：15"
               min="1"
