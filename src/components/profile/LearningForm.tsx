@@ -1,17 +1,12 @@
 "use client";
 
 import { useState } from "react";
-
-type LearningItem = {
-  id: number;
-  title: string;
-  description: string;
-};
+import type { LearningItem } from "@/types/profile";
 
 export function LearningForm() {
   const [learnings, setLearnings] = useState<LearningItem[]>([
     {
-      id: 1,
+      id: "1",
       title: "",
       description: "",
     },
@@ -21,14 +16,14 @@ export function LearningForm() {
     setLearnings([
       ...learnings,
       {
-        id: Date.now(),
+        id: String(Date.now()),
         title: "",
         description: "",
       },
     ]);
   };
 
-  const handleDeleteLearning = (id: number) => {
+  const handleDeleteLearning = (id: string) => {
     if (learnings.length === 1) {
       return;
     }
@@ -37,7 +32,7 @@ export function LearningForm() {
   };
 
   const handleChangeLearning = (
-    id: number,
+    id: string,
     field: "title" | "description",
     value: string
   ) => {
@@ -54,7 +49,10 @@ export function LearningForm() {
 
       <div className="mt-4 space-y-4">
         {learnings.map((learning, index) => (
-          <div key={learning.id} className="rounded-lg border border-gray-200 p-4">
+          <div
+            key={learning.id}
+            className="rounded-lg border border-gray-200 p-4"
+          >
             <p className="mb-4 text-sm font-bold text-gray-700">
               学習内容 {index + 1}
             </p>
