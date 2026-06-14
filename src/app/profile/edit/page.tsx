@@ -1,9 +1,36 @@
+"use client";
+
+import { useState } from "react";
 import { ImageUpload } from "@/components/profile/ImageUpload";
 import { LearningForm } from "@/components/profile/LearningForm";
 import { ProfileForm } from "@/components/profile/ProfileForm";
 import { WorkForm } from "@/components/profile/WorkForm";
+import type { ProfileFormData } from "@/types/profile";
 
 export default function ProfileEditPage() {
+  const [profile, setProfile] = useState<ProfileFormData>({
+    name: "",
+    birthMonth: "",
+    birthDay: "",
+    bloodType: "",
+    mbti: "",
+    bio: "",
+  });
+
+  const handleChangeProfile = (
+    field: keyof ProfileFormData,
+    value: string
+  ) => {
+    setProfile((prevProfile) => ({
+      ...prevProfile,
+      [field]: value,
+    }));
+  };
+
+  const handleSave = () => {
+    console.log("プロフィール情報:", profile);
+  };
+
   return (
     <main className="min-h-screen bg-gray-50 px-4 py-8">
       <div className="mx-auto max-w-4xl rounded-2xl bg-white p-6 shadow">
@@ -17,7 +44,12 @@ export default function ProfileEditPage() {
 
         <div className="mt-8 space-y-8">
           <ImageUpload />
-          <ProfileForm />
+
+          <ProfileForm
+            profile={profile}
+            onChangeProfile={handleChangeProfile}
+          />
+
           <LearningForm />
           <WorkForm />
         </div>
@@ -25,6 +57,7 @@ export default function ProfileEditPage() {
         <div className="mt-8 flex justify-end">
           <button
             type="button"
+            onClick={handleSave}
             className="rounded-lg bg-blue-600 px-5 py-2 text-sm font-bold text-white"
           >
             保存する

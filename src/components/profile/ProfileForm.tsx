@@ -1,28 +1,14 @@
-"use client";
-
-import { useState } from "react";
 import type { ProfileFormData } from "@/types/profile";
 
-export function ProfileForm() {
-  const [profile, setProfile] = useState<ProfileFormData>({
-    name: "",
-    birthMonth: "",
-    birthDay: "",
-    bloodType: "",
-    mbti: "",
-    bio: "",
-  });
+type ProfileFormProps = {
+  profile: ProfileFormData;
+  onChangeProfile: (field: keyof ProfileFormData, value: string) => void;
+};
 
-  const handleChangeProfile = (
-    field: keyof ProfileFormData,
-    value: string
-  ) => {
-    setProfile({
-      ...profile,
-      [field]: value,
-    });
-  };
-
+export function ProfileForm({
+  profile,
+  onChangeProfile,
+}: ProfileFormProps) {
   return (
     <section className="rounded-xl border border-gray-200 p-4">
       <h2 className="text-lg font-bold text-gray-900">基本情報</h2>
@@ -34,7 +20,7 @@ export function ProfileForm() {
             type="text"
             value={profile.name}
             onChange={(event) =>
-              handleChangeProfile("name", event.target.value)
+              onChangeProfile("name", event.target.value)
             }
             placeholder="名前を入力"
             className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900"
@@ -50,7 +36,7 @@ export function ProfileForm() {
               type="number"
               value={profile.birthMonth}
               onChange={(event) =>
-                handleChangeProfile("birthMonth", event.target.value)
+                onChangeProfile("birthMonth", event.target.value)
               }
               placeholder="例：1"
               min="1"
@@ -67,7 +53,7 @@ export function ProfileForm() {
               type="number"
               value={profile.birthDay}
               onChange={(event) =>
-                handleChangeProfile("birthDay", event.target.value)
+                onChangeProfile("birthDay", event.target.value)
               }
               placeholder="例：15"
               min="1"
@@ -82,7 +68,7 @@ export function ProfileForm() {
           <select
             value={profile.bloodType}
             onChange={(event) =>
-              handleChangeProfile("bloodType", event.target.value)
+              onChangeProfile("bloodType", event.target.value)
             }
             className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900"
           >
@@ -100,7 +86,7 @@ export function ProfileForm() {
             type="text"
             value={profile.mbti}
             onChange={(event) =>
-              handleChangeProfile("mbti", event.target.value)
+              onChangeProfile("mbti", event.target.value)
             }
             placeholder="例：INFJ"
             className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900"
@@ -112,7 +98,7 @@ export function ProfileForm() {
           <textarea
             value={profile.bio}
             onChange={(event) =>
-              handleChangeProfile("bio", event.target.value)
+              onChangeProfile("bio", event.target.value)
             }
             placeholder="自己紹介を入力"
             rows={4}
