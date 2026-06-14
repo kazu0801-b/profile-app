@@ -7,6 +7,7 @@ import { ProfileForm } from "@/components/profile/ProfileForm";
 import { WorkForm } from "@/components/profile/WorkForm";
 import type {
   LearningItem,
+  ProfileEditData,
   ProfileFormData,
   WorkItem,
 } from "@/types/profile";
@@ -43,10 +44,7 @@ export default function ProfileEditPage() {
     },
   ]);
 
-  const handleChangeProfile = (
-    field: keyof ProfileFormData,
-    value: string
-  ) => {
+  const handleChangeProfile = (field: keyof ProfileFormData, value: string) => {
     setProfile((prevProfile) => ({
       ...prevProfile,
       [field]: value,
@@ -70,14 +68,14 @@ export default function ProfileEditPage() {
     }
 
     setLearnings((prevLearnings) =>
-      prevLearnings.filter((learning) => learning.id !== id)
+      prevLearnings.filter((learning) => learning.id !== id),
     );
   };
 
   const handleChangeLearning = (
     id: string,
     field: keyof Omit<LearningItem, "id">,
-    value: string
+    value: string,
   ) => {
     setLearnings((prevLearnings) =>
       prevLearnings.map((learning) =>
@@ -86,8 +84,8 @@ export default function ProfileEditPage() {
               ...learning,
               [field]: value,
             }
-          : learning
-      )
+          : learning,
+      ),
     );
   };
 
@@ -117,7 +115,7 @@ export default function ProfileEditPage() {
   const handleChangeWork = (
     id: string,
     field: keyof Omit<WorkItem, "id">,
-    value: string
+    value: string,
   ) => {
     setWorks((prevWorks) =>
       prevWorks.map((work) =>
@@ -126,34 +124,33 @@ export default function ProfileEditPage() {
               ...work,
               [field]: value,
             }
-          : work
-      )
+          : work,
+      ),
     );
   };
 
   const handleSave = () => {
-    console.log("プロフィール画像:", imageFile);
-    console.log("プロフィール情報:", profile);
-    console.log("学習してきたこと:", learnings);
-    console.log("作ったもの:", works);
+    const profileEditData: ProfileEditData = {
+      imageFile,
+      profile,
+      learningItems: learnings,
+      workItems: works,
+    };
+
+    console.log("保存データ:", profileEditData);
   };
 
   return (
     <main className="min-h-screen bg-gray-50 px-4 py-8">
       <div className="mx-auto max-w-4xl rounded-2xl bg-white p-6 shadow">
-        <h1 className="text-2xl font-bold text-gray-900">
-          プロフィール編集
-        </h1>
+        <h1 className="text-2xl font-bold text-gray-900">プロフィール編集</h1>
 
         <p className="mt-2 text-sm text-gray-600">
           プロフィール情報、学習してきたこと、作ったものを編集します。
         </p>
 
         <div className="mt-8 space-y-8">
-          <ImageUpload
-            imageFile={imageFile}
-            onChangeImageFile={setImageFile}
-          />
+          <ImageUpload imageFile={imageFile} onChangeImageFile={setImageFile} />
 
           <ProfileForm
             profile={profile}
