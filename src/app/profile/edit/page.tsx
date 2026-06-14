@@ -5,7 +5,7 @@ import { ImageUpload } from "@/components/profile/ImageUpload";
 import { LearningForm } from "@/components/profile/LearningForm";
 import { ProfileForm } from "@/components/profile/ProfileForm";
 import { WorkForm } from "@/components/profile/WorkForm";
-import type { ProfileFormData } from "@/types/profile";
+import type { LearningItem, ProfileFormData } from "@/types/profile";
 
 export default function ProfileEditPage() {
   const [profile, setProfile] = useState<ProfileFormData>({
@@ -17,6 +17,14 @@ export default function ProfileEditPage() {
     bio: "",
   });
 
+  const [learnings, setLearnings] = useState<LearningItem[]>([
+    {
+      id: "1",
+      title: "",
+      description: "",
+    },
+  ]);
+
   const handleChangeProfile = (
     field: keyof ProfileFormData,
     value: string
@@ -27,8 +35,47 @@ export default function ProfileEditPage() {
     }));
   };
 
+  const handleAddLearning = () => {
+    setLearnings((prevLearnings) => [
+      ...prevLearnings,
+      {
+        id: String(Date.now()),
+        title: "",
+        description: "",
+      },
+    ]);
+  };
+
+  const handleDeleteLearning = (id: string) => {
+    if (learnings.length === 1) {
+      return;
+    }
+
+    setLearnings((prevLearnings) =>
+      prevLearnings.filter((learning) => learning.id !== id)
+    );
+  };
+
+  const handleChangeLearning = (
+    id: string,
+    field: keyof Omit<LearningItem, "id">,
+    value: string
+  ) => {
+    setLearnings((prevLearnings) =>
+      prevLearnings.map((learning) =>
+        learning.id === id
+          ? {
+              ...learning,
+              [field]: value,
+            }
+          : learning
+      )
+    );
+  };
+
   const handleSave = () => {
     console.log("プロフィール情報:", profile);
+    console.log("学習してきたこと:", learnings);
   };
 
   return (
@@ -50,7 +97,13 @@ export default function ProfileEditPage() {
             onChangeProfile={handleChangeProfile}
           />
 
-          <LearningForm />
+          <LearningForm
+            learnings={learnings}
+            onAddLearning={handleAddLearning}
+            onDeleteLearning={handleDeleteLearning}
+            onChangeLearning={handleChangeLearning}
+          />
+
           <WorkForm />
         </div>
 
