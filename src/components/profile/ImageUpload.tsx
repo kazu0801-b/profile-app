@@ -1,27 +1,40 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import type { ChangeEvent } from "react";
 
 export function ImageUpload() {
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
 
     if (!file) return;
 
     const imageUrl = URL.createObjectURL(file);
+
+    setImageFile(file);
     setPreviewUrl(imageUrl);
   };
 
   const handleDeleteImage = () => {
+    setImageFile(null);
     setPreviewUrl("");
 
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
   };
+
+  useEffect(() => {
+    return () => {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
 
   return (
     <section className="rounded-xl border border-gray-200 p-4">
@@ -52,6 +65,12 @@ export function ImageUpload() {
           <p className="mt-2 text-xs text-gray-500">
             画像を選択すると、ここにプレビュー表示されます。
           </p>
+
+          {imageFile && (
+            <p className="mt-2 text-xs text-gray-500">
+              選択中：{imageFile.name}
+            </p>
+          )}
 
           {previewUrl && (
             <button
