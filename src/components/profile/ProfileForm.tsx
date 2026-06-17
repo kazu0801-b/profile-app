@@ -82,15 +82,31 @@ export function ProfileForm({
 
         <label className="block">
           <span className="text-sm font-medium text-gray-700">MBTI</span>
-          <input
-            type="text"
+          <select
             value={profile.mbti}
             onChange={(event) =>
               onChangeProfile("mbti", event.target.value)
             }
-            placeholder="例：INFJ"
             className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900"
-          />
+          >
+            <option value="">選択してください</option>
+            <option value="INTJ">INTJ</option>
+            <option value="INTP">INTP</option>
+            <option value="ENTJ">ENTJ</option>
+            <option value="ENTP">ENTP</option>
+            <option value="INFJ">INFJ</option>
+            <option value="INFP">INFP</option>
+            <option value="ENFJ">ENFJ</option>
+            <option value="ENFP">ENFP</option>
+            <option value="ISTJ">ISTJ</option>
+            <option value="ISFJ">ISFJ</option>
+            <option value="ESTJ">ESTJ</option>
+            <option value="ESFJ">ESFJ</option>
+            <option value="ISTP">ISTP</option>
+            <option value="ISFP">ISFP</option>
+            <option value="ESTP">ESTP</option>
+            <option value="ESFP">ESFP</option>
+          </select>
         </label>
 
         <label className="block">

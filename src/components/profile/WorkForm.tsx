@@ -42,10 +42,11 @@ export function WorkForm({
                 }
                 className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900"
               >
-                <option value="">確認後に決定</option>
-                <option value="team">チーム制作</option>
-                <option value="internal">社内開発</option>
-                <option value="personal">個人制作</option>
+                <option value="">選択してください</option>
+                <option value="個人制作">個人制作</option>
+                <option value="チーム制作">チーム制作</option>
+                <option value="社内開発">社内開発</option>
+                <option value="学習課題">学習課題</option>
               </select>
             </label>
 
